@@ -9,17 +9,17 @@ export async function loader() {
     return reelsSchema.parse(response.data);
   } catch (error) {
     console.error("Failed to load reels:", error);
-    throw new Response("Could not load reels.", {status: 500 })
+    throw new Response("Could not load reels.", { status: 500 });
   }
 }
 
 export default function ReelsGrid() {
   const reels = useLoaderData() as Reel[];
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+    <div className='grid grid-cols-2 md:grid-cols-4 gap-1'>
       {reels.map((reel) => (
-        <ReelGridItem key={reel.id} reel={ reel} />
+        <ReelGridItem key={reel.id} reel={reel} />
       ))}
     </div>
-  )
+  );
 }
