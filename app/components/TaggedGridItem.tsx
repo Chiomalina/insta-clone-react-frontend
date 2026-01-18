@@ -1,19 +1,11 @@
-import type { Tagged } from "~/schemas/tagged.schema";
+import type { TaggedPost } from "~/schemas/tagged.schema"
+import { PostCard } from "~/components/PostCard"
 
-export function TaggedGridItem({ tagged }: { tagged: Tagged }) {
+export function TaggedGridItem({ tagged }: { tagged: TaggedPost }) {
   return (
-    <div>
-      <img
-        src={tagged.thumbnail_url}
-        alt={tagged.caption || "Tagged post"}
-        className="w-full h-full object-cover"
-      />
-
-      {tagged.caption && (
-        <div className="absolute bottom-2 left-2 text-white text-sm font-semibold">
-          { tagged.caption }
-        </div>
-      )}
-    </div>
-  );
+    <PostCard
+      post={tagged}
+      username={tagged.tagged_by.username}
+    />
+  )
 }

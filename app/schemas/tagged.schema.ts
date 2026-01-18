@@ -1,14 +1,20 @@
-import { z } from "zod";
+import { z } from "zod"
 
-const taggedSchema = z.object({
+export const taggerSchema = z.object({
   id: z.number(),
-  thumbnail_url: z.string().url(),
-  caption: z.string().optional(),
-});
+  username: z.string(),
+  avatar_url: z.string().url().nullable().optional(),
+})
 
-const taggedSchemas = z.array(taggedSchema);
+export const taggedPostSchema = z.object({
+  id: z.number(),
+  img_url: z.string().url(),
+  caption: z.string().nullable(),
+  created_at: z.string(),
+  tagged_by: taggerSchema,
+})
 
-type Tagged = z.infer<typeof taggedSchema>;
+export const taggedGridSchema = z.array(taggedPostSchema)
 
-export { taggedSchema, taggedSchemas };
-export type { Tagged };
+export type TaggedPost = z.infer<typeof taggedPostSchema>
+export type TaggedGrid = z.infer<typeof taggedGridSchema>
