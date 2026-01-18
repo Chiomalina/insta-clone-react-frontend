@@ -9,7 +9,7 @@ export async function loader() {
     return reelsSchema.parse(response.data);
   } catch (error) {
     console.error("Failed to load reels:", error);
-    throw new Response("Could not load reels.", { status: 500 });
+    throw new Response("Could not load reels.", { status: 404 });
   }
 }
 

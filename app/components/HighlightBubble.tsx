@@ -1,5 +1,5 @@
 import { Link } from "react-router"
-import type { Highlight } from "~/schemas/highlights.schema"
+import type { Highlight } from "~/schemas/highlight.schema"
 
 export function HighlightBubble({ highlight }: { highlight: Highlight }) {
   return (

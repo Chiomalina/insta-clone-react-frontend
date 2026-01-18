@@ -8,7 +8,7 @@ import { api } from "~/services/api"
 import {
   highlightsListSchema,
   type Highlight,
-} from "~/schemas/highlights.schema"
+} from "~/schemas/highlight.schema"
 import { HighlightBubble } from "~/components/HighlightBubble"
 
 export async function loader() {
@@ -16,7 +16,7 @@ export async function loader() {
     const response = await api.get("/highlights")
     return highlightsListSchema.parse(response.data)
   } catch {
-    throw new Response("Could not load highlights", { status: 500 })
+    throw new Response("Could not load highlights", { status: 404 })
   }
 }
 

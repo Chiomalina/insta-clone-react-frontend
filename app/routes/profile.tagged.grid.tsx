@@ -13,7 +13,7 @@ export async function loader() {
     const response = await api.get("/tagged/grid")
     return taggedGridSchema.parse(response.data)
   } catch (err) {
-    throw new Response("Could not load tagged posts.", { status: 500 })
+    throw new Response("Could not load tagged posts.", { status: 404 })
   }
 }
 

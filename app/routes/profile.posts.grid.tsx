@@ -11,7 +11,7 @@ export async function loader() {
     console.log("The response data from loader is",response.data)
   } catch(error) {
     console.error("Failed to load posts:", error);
-    throw new Response("Could not load posts.", { status: 500 });
+    throw new Response("Could not load posts.", { status: 404 });
   }
 }
 
