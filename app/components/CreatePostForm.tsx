@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form, useNavigation } from "react-router";
 import { createPostInputSchema } from "~/schemas/post.schema";
 import { z } from "zod";
