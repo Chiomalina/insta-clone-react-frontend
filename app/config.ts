@@ -16,3 +16,5 @@ if (API_BASE_URL.includes("localhost")) {
     `API_BASE_URL is pointing to localhost (${API_BASE_URL}). Fix VITE_API_BASE_URL on Vercel.`
   );
 }
+
+if (typeof window === "undefined") console.log("CONFIG VERSION:", "2026-01-20-14:45");
