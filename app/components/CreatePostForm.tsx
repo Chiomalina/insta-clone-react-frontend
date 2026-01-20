@@ -8,10 +8,15 @@ type FormErrors = z.ZodIssue[];
 export function CreatePostForm() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
+
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [caption, setCaption] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<FormErrors>([]);
+
+  const imageError = errors.find((e) => e.path[0] === "image")?.message;
+  const captionError = errors.find((e) => e.path[0] === "caption")?.message;
+
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -50,79 +55,117 @@ export function CreatePostForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4 text-center">Create New Post</h2>
-      <Form
-        method="post"
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
-        className="space-y-4"
-      >
+    // NOTE: no max-w here — page controls width
+    <div className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
         <div>
-          <label
-            htmlFor="image"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Upload Image
-          </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="block w-full text-sm text-gray-500
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100"
-          />
-          {previewUrl && (
-            <img
-              src={previewUrl}
-              alt="Image Preview"
-              className="mt-4 max-h-60 w-auto rounded-md shadow-sm mx-auto"
-            />
-          )}
-          {errors.find((e) => e.path[0] === "image") && (
-            <p className="mt-2 text-sm text-red-600">
-              {errors.find((e) => e.path[0] === "image")?.message}
-            </p>
-          )}
+          <h2 className="text-base font-semibold text-gray-900">Create post</h2>
+          <p className="mt-0.5 text-xs text-gray-500">Upload an image and add a caption.</p>
         </div>
+        <div className="h-9 w-9 rounded-full bg-gray-100" />
+      </div>
 
-        <div>
-          <label
-            htmlFor="caption"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Caption
-          </label>
-          <textarea
-            id="caption"
-            name="caption"
-            rows={3}
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-            placeholder="Write a caption..."
-          ></textarea>
-          {errors.find((e) => e.path[0] === "caption") && (
-            <p className="mt-2 text-sm text-red-600">
-              {errors.find((e) => e.path[0] === "caption")?.message}
-            </p>
-          )}
-        </div>
-
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      <div className="p-5">
+        <Form
+          method="post"
+          encType="multipart/form-data"
+          onSubmit={handleSubmit}
+          className="space-y-5"
         >
-          {isSubmitting ? "Creating..." : "Create Post"}
-        </button>
-      </Form>
+          {/* Image */}
+          <div className="space-y-2">
+            <label htmlFor="image" className="text-sm font-medium text-gray-800">
+              Photo
+            </label>
+
+            <div
+              className={[
+                "rounded-xl border border-dashed p-4 bg-white transition",
+                imageError
+                  ? "border-red-300 bg-red-50/30"
+                  : "border-gray-200 hover:border-gray-300 hover:bg-gray-50",
+              ].join(" ")}
+            >
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="block w-full text-sm text-gray-600
+                  file:mr-4 file:rounded-full file:border-0
+                  file:bg-gray-900 file:px-4 file:py-2
+                  file:text-sm file:font-semibold file:text-white
+                  hover:file:bg-black
+                  focus:outline-none"
+              />
+
+              <p className="mt-2 text-xs text-gray-500">
+                PNG, JPG, or WEBP. Square-ish images look best.
+              </p>
+
+              {previewUrl && (
+                <div className="mt-4 overflow-hidden rounded-xl border bg-white">
+                  <img
+                    src={previewUrl}
+                    alt="Image Preview"
+                    className="aspect-square w-full object-cover"
+                  />
+                </div>
+              )}
+            </div>
+
+            {imageError && <p className="text-sm text-red-600">{imageError}</p>}
+          </div>
+
+          {/* Caption */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="caption" className="text-sm font-medium text-gray-800">
+                Caption
+              </label>
+              <span className="text-xs text-gray-400">{caption.length}/2200</span>
+            </div>
+
+            <textarea
+              id="caption"
+              name="caption"
+              rows={4}
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="Write a caption..."
+              className={[
+                "block w-full rounded-xl border bg-white px-3 py-2 text-sm text-gray-900 shadow-sm outline-none transition",
+                "placeholder:text-gray-400",
+                captionError
+                  ? "border-red-300 focus:border-red-400 focus:ring-2 focus:ring-red-200"
+                  : "border-gray-200 focus:border-gray-400 focus:ring-2 focus:ring-gray-200",
+              ].join(" ")}
+            />
+
+            {captionError && <p className="text-sm text-red-600">{captionError}</p>}
+          </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={[
+              "w-full rounded-xl px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition",
+              "bg-gray-900 hover:bg-black",
+              "focus:outline-none focus:ring-2 focus:ring-gray-300",
+              "disabled:cursor-not-allowed disabled:opacity-50",
+            ].join(" ")}
+          >
+            {isSubmitting ? "Creating..." : "Share"}
+          </button>
+
+          <p className="text-center text-xs text-gray-500">
+            Tip: use a short caption + emojis for that IG vibe ✨
+          </p>
+        </Form>
+      </div>
     </div>
   );
 }

@@ -10,7 +10,7 @@ export function HighlightStory({ highlight }: { highlight: Highlight }) {
           </p>
         </div>
 
-        <div className="w-full aspect-[9/16] rounded-xl overflow-hidden bg-gray-900">
+        <div className="w-full `aspect-[9/16]` rounded-xl overflow-hidden bg-gray-900">
           <img
             src={highlight.cover_image_url}
             alt={highlight.title ?? "Highlight"}
