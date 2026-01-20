@@ -1,8 +1,8 @@
-const envBaseUrl = import.meta.env.VITE_API_BASE_URL;
+const serverEnv =
+  typeof window === "undefined" ? process.env.VITE_API_BASE_URL : undefined;
 
-export const API_BASE_URL = envBaseUrl || "http://localhost:3000";
+const clientEnv =
+  typeof window !== "undefined" ? import.meta.env.VITE_API_BASE_URL : undefined;
 
-
-if (typeof window === "undefined") {
-  console.log("API_BASE_URL (server):", API_BASE_URL);
-}
+export const API_BASE_URL =
+  serverEnv || clientEnv || "http://localhost:3000";

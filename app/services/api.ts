@@ -1,9 +1,6 @@
 import axios from "axios";
+import { API_BASE_URL } from "~/config";
 
-// We define the base URL of our backend API.
-const api = axios.create({
-  // Fastify backen address
-  baseURL: "http://localhost:3000"
+export const api = axios.create({
+  baseURL: API_BASE_URL,
 });
-
-export { api }
