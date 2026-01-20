@@ -1,3 +1,5 @@
+import { API_BASE_URL } from "../config";
+
 type PostLike = {
   img_url: string
   caption: string | null
@@ -9,7 +11,11 @@ export function PostCard({
 }: {
   post: PostLike
   username?: string
-}) {
+  }) {
+
+    const imageSrc = post.img_url.startsWith("http")
+      ? post.img_url
+      : `${API_BASE_URL}${post.img_url}`;
   return (
     <div className="w-full max-w-lg mx-auto rounded-lg overflow-hidden border bg-white mb-6">
       <div className="p-4">
@@ -17,7 +23,7 @@ export function PostCard({
       </div>
 
       <img
-        src={post.img_url}
+        src={imageSrc}
         alt={post.caption || "Instagram post"}
         className="w-full h-auto aspect-square object-cover"
       />

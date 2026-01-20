@@ -3,7 +3,7 @@ import { z } from "zod";
 // First, we declare a zod schema
 const postSchema = z.object({
   id: z.number(),
-  img_url: z.string().url(),
+  img_url: z.string().min(1),
   caption: z.string().nullable(),
   created_at: z.string(),
 });

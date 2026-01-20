@@ -7,11 +7,14 @@ import { PostCard } from "~/components/PostCard";
 export async function loader() {
   try {
     const response = await api.get("/posts");
-    return postsSchema.parse(response.data);
-    console.log("The response data from loader is",response.data)
+    console.log("Raw /posts response:", response.data);
+
+    const parsed = postsSchema.parse(response.data);
+    console.log("The response data from loader is", response.data)
+    return parsed
   } catch(error) {
     console.error("Failed to load posts:", error);
-    throw new Response("Could not load posts.", { status: 404 });
+    throw new Response("Could not load posts.", { status: 500 });
   }
 }
 
